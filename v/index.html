@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Royal Wedding Invitation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;700&family=Great+Vibes&family=Montserrat:wght@400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    background-color: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+    color: #5c2c16;
+  }
+
+  /* मुख्य मोबाइल स्क्रीन कंटेनर */
+  .app-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    max-height: 850px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #fcf8f2;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .app-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* म्यूजिक कंट्रोल बटन */
+  .music-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #fff8e7, #e6c88a);
+    border: 1.5px solid #b8860b;
+    color: #5c1e16;
+    font-size: 16px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1200;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  }
+  @media (min-width: 421px) {
+    .music-btn {
+      right: calc(50% - 194px);
+    }
+  }
+
+  /* 1. गेट ओपनिंग स्क्रीन */
+  #gate-screen {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    max-height: 850px;
+    z-index: 1000;
+    overflow: hidden;
+    background: #000;
+    transition: opacity 0.8s ease;
+  }
+
+  #closed-gate-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 2;
+  }
+
+  #gate-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 1;
+    display: none;
+  }
+
+  .tap-btn {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #ffffff, #ffe4e9);
+    border: 1.5px solid #1a1a1a;
+    color: #1a1a1a;
+    padding: 13px 36px;
+    border-radius: 30px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    z-index: 1100;
+    animation: pulseBtn 2s infinite;
+    white-space: nowrap;
+  }
+  @keyframes pulseBtn {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+  }
+
+  /* 2A. हवा में लेफ्ट-टू-राइट लहराती पत्तियां */
+  .petal {
+    position: absolute;
+    top: 10px;
+    width: 14px;
+    height: 18px;
+    background: radial-gradient(circle, #fff0f3 0%, #ffccd5 60%, #e29578 100%);
+    border-radius: 12px 0 12px 0;
+    opacity: 0.85;
+    z-index: 100;
+    pointer-events: none;
+    animation: floatWind linear infinite;
+  }
+  @keyframes floatWind {
+    0% { transform: translate(-30px, 0) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.9; }
+    80% { opacity: 0.9; }
+    100% { transform: translate(380px, 250px) rotate(360deg); opacity: 0; }
+  }
+
+  /* 2B. गेट खुलने पर ऊपर से गिरने वाले फूल */
+  .falling-petal {
+    position: fixed;
+    top: -30px;
+    width: 16px;
+    height: 20px;
+    background: radial-gradient(circle, #fff5f7 0%, #ffb3c1 65%, #d9826c 100%);
+    border-radius: 14px 0 14px 0;
+    opacity: 0.95;
+    z-index: 950;
+    pointer-events: none;
+    animation: dropTopToBottom 4.5s ease-in forwards;
+  }
+  @keyframes dropTopToBottom {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
+    50% { transform: translateY(420px) translateX(25px) rotate(180deg); opacity: 0.9; }
+    100% { transform: translateY(880px) translateX(-15px) rotate(360deg); opacity: 0; }
+  }
+
+  /* सेक्शन कॉमन स्टाइल */
+  .section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 25px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  /* =========================================================
+     SECTION 1: फिक्स बैकग्राउंड + बीच में स्क्रॉल कंटेंट + ऊपर home-overlay.png
+     ========================================================= */
+  #section1 {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    display: block;
+    background: none;
+  }
+
+  .fixed-home-bg {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    max-height: 850px;
+    background-image: url('home-bg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .fixed-home-overlay {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    max-height: 850px;
+    margin-top: -100vh;
+    background-image: url('home-overlay.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .home-scroll-layers {
+    position: relative;
+    z-index: 2;
+    margin-top: -100vh;
+  }
+
+  .names-frame {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    max-height: 850px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 25px;
+    margin-bottom: 180px;
+  }
+
+  .date-frame {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    max-height: 850px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 35px 20px;
+  }
+
+  .write-anim {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transform: translateY(10px);
+    transition: opacity 1s ease, clip-path 1.4s ease, transform 1s ease;
+  }
+  .write-anim.show {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+  }
+
+  .ganesh-svg {
+    width: 66px;
+    height: auto;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: all 1s ease;
+  }
+  .ganesh-svg.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .mantra {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #8b4513;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .invite-line {
+    font-size: 13px;
+    color: #6b3e26;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .couple-names {
+    font-family: 'Alex Brush', cursive;
+    font-size: 58px;
+    font-weight: 400;
+    color: #7a2e16;
+    line-height: 1.05;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 6px rgba(122, 46, 22, 0.12);
+  }
+  .amp {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    display: block;
+    margin: 2px 0;
+    color: #b8860b;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #7a2e16;
+    animation: bounce 2s infinite;
+    transition: opacity 0.4s ease;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .save-date-title {
+    font-family: 'Alex Brush', cursive;
+    font-size: 54px;
+    color: #7a2e16;
+    margin-bottom: 22px;
+    line-height: 1.1;
+  }
+
+  .scratch-wrapper {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    border: 3px solid #d4af37;
+    background: #fffaf0;
+    margin: 0 auto 26px auto;
+  }
+  .hidden-date {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #fffdf7, #f5e6c8);
+  }
+  .hidden-date .day-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: #8b4513;
+    font-weight: 600;
+  }
+  .hidden-date .date-num {
+    font-family: 'Cinzel', serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: #7a2e16;
+    line-height: 1.1;
+    margin: 2px 0;
+  }
+  .hidden-date .month-year {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 2.5px;
+    color: #8b4513;
+    font-weight: 600;
+  }
+  #scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .countdown-box {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  .time-card {
+    background: linear-gradient(145deg, #6e1414, #4a0a0a);
+    color: #f7e7ce;
+    width: 68px;
+    padding: 12px 4px;
+    border-radius: 10px;
+    border: 1.5px solid #d4af37;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.28);
+  }
+  .time-card span {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffd700;
+  }
+  .time-card small {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* =========================================================
+     SECTION 2: फैमिली सेक्शन
+     ========================================================= */
+  #section2 {
+    background-image: url('family-bg.png');
+    height: 100vh;
+    max-height: 850px;
+    z-index: 5;
+  }
+  .fixed-title {
+    position: absolute;
+    top: 16%;
+    width: 100%;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    letter-spacing: 3px;
+    color: #5c1e16;
+    font-weight: 700;
+  }
+  .scroll-details-wrapper {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 86%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .reveal-text {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal-text.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .person-name {
+    font-family: 'Alex Brush', cursive;
+    font-size: 31px;
+    color: #6e2612;
+    line-height: 1.05;
+    margin-bottom: 2px;
+  }
+  .person-name small {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: #7a2e16;
+  }
+  .relation-line {
+    font-size: 9.8px;
+    color: #4a2c18;
+    line-height: 1.32;
+    font-weight: 600;
+  }
+  .relation-line .sub-detail {
+    display: block;
+    font-size: 9px;
+    font-style: italic;
+    font-weight: 500;
+    color: #633d24;
+  }
+  .family-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0;
+    width: 60%;
+  }
+  .family-divider::before,
+  .family-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b8860b, transparent);
+  }
+  .family-amp {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: #8b5a2b;
+  }
+
+  /* =========================================================
+     SECTION 3: events-bg.png के साथ आने-जाने और बीच में फिक्स रहने वाली overlay.png
+     ========================================================= */
+  #section3 {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    display: block;
+    background: none;
+    z-index: 6;
+  }
+
+  /* लेयर 1: सबसे पीछे का बैकग्राउंड */
+  .fixed-events-bg {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    max-height: 850px;
+    background: url('events-bg.png') no-repeat center center/cover;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* लेयर 2: स्क्रॉल होने वाले तीनों फ्रेम */
+  .events-scroll-frames {
+    position: relative;
+    z-index: 10;
+    margin-top: -100vh;
+    padding: 250px 45px 280px 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 180px;
+  }
+
+  .event-card {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .event-card img {
+    width: 82%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  /* --- फ्रेम के अंदर छपे हुए बटन के ठीक ऊपर आने वाला क्लिकेबल एरिया --- */
+  .map-overlay-link {
+    position: absolute;
+    top: 61.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 52%;
+    height: 9%;
+    cursor: pointer;
+    z-index: 20;
+    background: transparent;
+    border-radius: 30px;
+  }
+
+  /* लेयर 3: events-bg.png के साथ स्क्रीन पर आने वाली, बीच में फिक्स रहने वाली और अंत में साथ स्क्रॉल होने वाली overlay.png */
+  .fixed-events-overlay {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    max-height: 850px;
+    background: url('overlay.png') no-repeat center center/cover;
+    z-index: 50;
+    pointer-events: none;
+    transform: translate3d(-50%, 100%, 0);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* SECTION 4: पोलरॉइड गैलरी */
+  #section4 {
+    background-image: url('moments-bg.png');
+    height: 100vh;
+    max-height: 850px;
+    z-index: 60;
+  }
+  .polaroid-stage {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 210px;
+    height: 255px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .polaroid-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    padding: 8px 8px 30px 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 2px;
+    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease;
+  }
+  .polaroid-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .gold-pin {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle at 30% 30%, #f7e199, #b88a36 70%, #6e4d12);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    z-index: 25;
+  }
+  .nav-btn {
+    position: absolute;
+    top: 48%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fdf8ee 40%, #e6d5b8 100%);
+    border: 2px solid #bfa373;
+    color: #4a3520;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 30;
+  }
+  .prev-btn { left: 10px; }
+  .next-btn { right: 10px; }
+  .dots-container {
+    position: absolute;
+    top: 66%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 20;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(139, 90, 43, 0.4);
+    cursor: pointer;
+  }
+  .dot.active {
+    background-color: #8b261d;
+    transform: scale(1.3);
+  }
+  .slide-out-left {
+    transform: translate(-130%, 10%) rotate(-20deg) !important;
+    opacity: 0 !important;
+  }
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="wedding-song.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-btn" id="musicToggleBtn" onclick="toggleMusic()" aria-label="Toggle Music">🔊</button>
+
+<div class="app-container" id="appContainer">
+
+  <!-- 1. गेट ओपनिंग स्क्रीन -->
+  <div id="gate-screen">
+    <img src="gate-closed.png" alt="Closed Gate" id="closed-gate-img">
+    <video id="gate-video" muted playsinline preload="auto">
+      <source src="gate-animation.mp4" type="video/mp4">
+    </video>
+    <button class="tap-btn" id="openBtn" onclick="playGateAnimation()">TAP TO OPEN</button>
+  </div>
+
+  <!-- SECTION 1: फिक्स बैकग्राउंड + बीच में स्क्रॉल कंटेंट + ऊपर home-overlay.png -->
+  <div id="section1">
+    <div class="fixed-home-bg"></div>
+    <div class="fixed-home-overlay"></div>
+
+    <div class="home-scroll-layers">
+      <!-- पहला व्यू: गणेश जी और दूल्हा-दुल्हन के नाम -->
+      <div class="names-frame" id="namesFrame">
+        <svg class="ganesh-svg" id="ganeshIcon" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M46 26 C52 14, 68 14, 74 26" stroke="#8b4513" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M51 19 C56 10, 64 10, 69 19" stroke="#8b4513" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="60" cy="8" r="2.2" fill="#8b4513"/>
+          <path d="M60 28 V38" stroke="#8b4513" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="60" cy="42" r="1.8" fill="#8b4513"/>
+          <path d="M44 34 C24 30, 18 54, 34 66 C40 70, 44 66, 44 60" stroke="#8b4513" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M76 34 C96 30, 102 54, 86 66 C80 70, 76 66, 76 60" stroke="#8b4513" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M46 44 Q51 41 55 44" stroke="#8b4513" stroke-width="2" stroke-linecap="round"/>
+          <path d="M65 44 Q69 41 74 44" stroke="#8b4513" stroke-width="2" stroke-linecap="round"/>
+          <path d="M53 50 C52 68, 52 86, 66 94 C78 100, 86 90, 80 82 C76 77, 70 81, 72 86" stroke="#8b4513" stroke-width="2.8" stroke-linecap="round"/>
+          <path d="M47 64 L42 69" stroke="#8b4513" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M73 64 L77 67" stroke="#8b4513" stroke-width="2" stroke-linecap="round"/>
+          <path d="M36 108 Q60 116 84 108" stroke="#8b4513" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M44 115 Q60 121 76 115" stroke="#8b4513" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+
+        <div class="mantra write-anim" id="text1">|| SHREE GANESHAYA NAMAH ||</div>
+        <p class="invite-line write-anim" id="text2">Together with our families, we<br>invite you to the wedding of</p>
+        <div class="couple-names write-anim" id="text3">
+          Vandana
+          <span class="amp">&amp;</span>
+          Mukul
+        </div>
+
+        <div class="scroll-hint" id="scrollHint">SCROLL DOWN ↓</div>
+      </div>
+
+      <!-- दूसरा व्यू: Save the Date सेक्शन -->
+      <div class="date-frame" id="dateFrame">
+        <h2 class="save-date-title scroll-reveal">Save the Date</h2>
+        <div class="scratch-wrapper scroll-reveal">
+          <div class="hidden-date">
+            <div class="day-name">FRIDAY</div>
+            <div class="date-num">12</div>
+            <div class="month-year">FEBRUARY 2027</div>
+          </div>
+          <canvas id="scratch-canvas" width="300" height="150"></canvas>
+        </div>
+        <div class="countdown-box scroll-reveal">
+          <div class="time-card"><span id="days">00</span><small>Days</small></div>
+          <div class="time-card"><span id="hours">00</span><small>Hours</small></div>
+          <div class="time-card"><span id="mins">00</span><small>Mins</small></div>
+          <div class="time-card"><span id="secs">00</span><small>Secs</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: फैमिली सेक्शन -->
+  <div class="section" id="section2">
+    <div class="fixed-title">THE FAMILIES</div>
+    <div class="scroll-details-wrapper" id="detailsWrapper">
+      <div class="reveal-text">
+        <div class="person-name">Vandana</div>
+        <div class="relation-line">
+          Daughter of Smt. Rajni Agrawal &amp; Shri Ashok Kumar Mangal
+          <span class="sub-detail">Granddaughter of Smt. Vimla Devi &amp; Late Shri Jagdish Prasad Mangal</span>
+          <span class="sub-detail">Res: D-92, Prem Vihar Colony, Phase-2, Trans Yamuna Colony, Agra</span>
+        </div>
+      </div>
+
+      <div class="family-divider reveal-text">
+        <span class="family-amp">&amp;</span>
+      </div>
+
+      <div class="reveal-text">
+        <div class="person-name">Chintu <small>(Mukul)</small></div>
+        <div class="relation-line">
+          Son of Smt. Anju Devi &amp; Shri Mohanlal Singhal
+          <span class="sub-detail">Grandson of Late Smt. Maya Devi &amp; Late Shri Ramcharan Lal Singhal</span>
+          <span class="sub-detail">Res: 15 B, Heera Kunj, Deori Road, Near Baba Atta Chakki, Agra</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: events-bg.png के साथ आने-जाने और बीच में फिक्स रहने वाली overlay.png -->
+  <div id="section3">
+    <!-- 1. सबसे पीछे का बैकग्राउंड -->
+    <div class="fixed-events-bg"></div>
+
+    <!-- 2. एक के बाद एक स्क्रॉल होने वाले तीनों फ्रेम -->
+    <div class="events-scroll-frames">
+      <!-- पहला फ्रेम (पहली लोकेशन के साथ - फ्रेम के अंदर बने बटन पर क्लिक होगा) -->
+      <div class="event-card">
+        <img src="frame1.png" alt="Event 1">
+        <a href="https://maps.app.goo.gl/g9SviJvvpuonaxXy5" target="_blank" class="map-overlay-link" aria-label="Get Directions"></a>
+      </div>
+
+      <!-- दूसरा फ्रेम (दूसरी लोकेशन के साथ - फ्रेम के अंदर बने बटन पर क्लिक होगा) -->
+      <div class="event-card">
+        <img src="frame2.png" alt="Event 2">
+        <a href="https://maps.app.goo.gl/9SecSdMnzteiXyvG7" target="_blank" class="map-overlay-link" aria-label="Get Directions"></a>
+      </div>
+
+      <!-- तीसरा फ्रेम (बिना बटन के) -->
+      <div class="event-card">
+        <img src="frame3.png" alt="Event 3">
+      </div>
+    </div>
+
+    <!-- 3. events-bg.png के साथ स्क्रीन पर आने वाली, बीच में फिक्स रहने वाली और अंत में साथ स्क्रॉल होने वाली PNG -->
+    <div class="fixed-events-overlay" id="fixedEventsOverlay"></div>
+  </div>
+
+  <!-- SECTION 4: पोलरॉइड गैलरी -->
+  <div class="section" id="section4">
+    <button class="nav-btn prev-btn" onclick="prevPhoto()">&#10094;</button>
+
+    <div class="polaroid-stage" id="polaroidStage" onclick="nextPhoto()">
+      <div class="gold-pin"></div>
+    </div>
+
+    <button class="nav-btn next-btn" onclick="nextPhoto()">&#10095;</button>
+
+    <div class="dots-container" id="dotsContainer"></div>
+  </div>
+
+</div>
+
+<script>
+  let petalsStarted = false;
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggleBtn = document.getElementById('musicToggleBtn');
+
+  function startBackgroundMusic() {
+    musicToggleBtn.style.display = 'flex';
+    bgMusic.play().then(() => {
+      musicToggleBtn.innerText = '🔊';
+    }).catch(() => {
+      musicToggleBtn.innerText = '🔇';
+    });
+  }
+
+  function toggleMusic() {
+    if (bgMusic.paused) {
+      bgMusic.play().then(() => {
+        musicToggleBtn.innerText = '🔊';
+      }).catch(() => {});
+    } else {
+      bgMusic.pause();
+      musicToggleBtn.innerText = '🔇';
+    }
+  }
+
+  function playGateAnimation() {
+    const closedImg = document.getElementById('closed-gate-img');
+    const video = document.getElementById('gate-video');
+    const btn = document.getElementById('openBtn');
+    const gateScreen = document.getElementById('gate-screen');
+
+    startBackgroundMusic();
+
+    btn.style.display = 'none';
+    closedImg.style.display = 'none';
+    video.style.display = 'block';
+
+    video.ontimeupdate = function() {
+      if (!petalsStarted && video.duration && (video.duration - video.currentTime <= 1.0)) {
+        petalsStarted = true;
+        startPetals();
+      }
+    };
+
+    let playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {}).catch(error => {
+        gateScreen.style.display = 'none';
+        startPetals();
+        triggerTopFallingPetals();
+        animateIntroTexts();
+      });
+    }
+
+    video.onended = function() {
+      if (!petalsStarted) {
+        petalsStarted = true;
+        startPetals();
+      }
+      gateScreen.style.opacity = '0';
+      setTimeout(() => {
+        gateScreen.style.display = 'none';
+        triggerTopFallingPetals();
+        animateIntroTexts();
+      }, 500);
+    };
+  }
+
+  function animateIntroTexts() {
+    setTimeout(() => { document.getElementById('ganeshIcon').classList.add('show'); }, 200);
+    setTimeout(() => { document.getElementById('text1').classList.add('show'); }, 500);
+    setTimeout(() => { document.getElementById('text2').classList.add('show'); }, 1000);
+    setTimeout(() => { document.getElementById('text3').classList.add('show'); }, 1600);
+  }
+
+  function triggerTopFallingPetals() {
+    const container = document.getElementById('appContainer');
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        let fPetal = document.createElement('div');
+        fPetal.className = 'falling-petal';
+        fPetal.style.left = (Math.random() * 80 + 10) + '%';
+        fPetal.style.animationDuration = (Math.random() * 1.5 + 3.5) + 's';
+        container.appendChild(fPetal);
+        setTimeout(() => fPetal.remove(), 5500);
+      }, i * 350);
+    }
+  }
+
+  function startPetals() {
+    const namesFrame = document.getElementById('namesFrame');
+    for (let i = 0; i < 3; i++) {
+      let petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.top = (Math.random() * 60 + 10) + '%';
+      petal.style.left = (-10 - (i * 15)) + '%';
+      petal.style.animationDuration = (Math.random() * 3 + 4.5) + 's';
+      petal.style.animationDelay = (i * 1.8) + 's';
+      namesFrame.appendChild(petal);
+    }
+  }
+
+  const appContainer = document.getElementById('appContainer');
+  const scrollHint = document.getElementById('scrollHint');
+  const revealElements = document.querySelectorAll('.scroll-reveal, .reveal-text');
+  const section3 = document.getElementById('section3');
+  const fixedEventsOverlay = document.getElementById('fixedEventsOverlay');
+
+  function updateEventsOverlay() {
+    const containerRect = appContainer.getBoundingClientRect();
+    const sec3Rect = section3.getBoundingClientRect();
+    const overlayHeight = Math.min(containerRect.height, 850);
+
+    // Section 3 का top कंटेनर के bottom से अंदर आते ही (events-bg.png के साथ) overlay भी नीचे से ऊपर आता है
+    if (sec3Rect.top < containerRect.bottom && sec3Rect.bottom > containerRect.top) {
+      let offsetY = 0;
+
+      // 1. शुरू में events-bg.png के साथ नीचे से ऊपर आना
+      if (sec3Rect.top > containerRect.top) {
+        offsetY = sec3Rect.top - containerRect.top;
+      }
+      // 2. अंत में सारे फ्रेम स्क्रॉल होने के बाद events-bg.png के साथ ऊपर निकल जाना
+      else if ((sec3Rect.bottom - containerRect.top) < overlayHeight) {
+        offsetY = (sec3Rect.bottom - containerRect.top) - overlayHeight;
+      }
+
+      fixedEventsOverlay.style.opacity = '1';
+      fixedEventsOverlay.style.visibility = 'visible';
+      fixedEventsOverlay.style.transform = `translate3d(-50%, ${offsetY}px, 0)`;
+    } else {
+      fixedEventsOverlay.style.opacity = '0';
+      fixedEventsOverlay.style.visibility = 'hidden';
+      fixedEventsOverlay.style.transform = `translate3d(-50%, ${overlayHeight}px, 0)`;
+    }
+  }
+
+  function revealVisibleElements() {
+    revealElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 40) {
+        el.classList.add('visible');
+        el.classList.add('active');
+      }
+    });
+  }
+
+  appContainer.addEventListener('scroll', () => {
+    if (appContainer.scrollTop > 30) {
+      scrollHint.style.opacity = '0';
+      setTimeout(() => { scrollHint.style.display = 'none'; }, 300);
+    }
+    revealVisibleElements();
+    updateEventsOverlay();
+  });
+
+  window.addEventListener('load', () => {
+    revealVisibleElements();
+    updateEventsOverlay();
+  });
+
+  const canvas = document.getElementById('scratch-canvas');
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+
+  function initScratchCard() {
+    const grad = ctx.createLinearGradient(0, 0, 300, 150);
+    grad.addColorStop(0, '#d4af37');
+    grad.addColorStop(0.5, '#f9e29c');
+    grad.addColorStop(1, '#aa7c11');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 300, 150);
+
+    ctx.fillStyle = '#4a2511';
+    ctx.font = 'bold 13px Cinzel, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('SCRATCH TO UNLOCK', 150, 50);
+    ctx.font = 'bold 18px Cinzel, serif';
+    ctx.fillText('— THE DATE —', 150, 82);
+    ctx.font = '11px Montserrat, sans-serif';
+    ctx.fillText('Rub the gold with your finger', 150, 115);
+  }
+  initScratchCard();
+
+  function scratch(e) {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 24, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  canvas.addEventListener('mousedown', () => isDrawing = true);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mousemove', scratch);
+  canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+  canvas.addEventListener('touchend', () => isDrawing = false);
+  canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); });
+
+  const weddingDate = new Date("Feb 12, 2027 10:00:00").getTime();
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diff = weddingDate - now;
+    if (diff > 0) {
+      document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+      document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      document.getElementById('mins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      document.getElementById('secs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+    }
+  }, 1000);
+
+  const photos = [
+    "photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg",
+    "photo5.jpg", "photo6.jpg", "photo7.jpg", "photo8.jpg"
+  ];
+
+  let currentIndex = 0;
+  const stage = document.getElementById('polaroidStage');
+  const dotsContainer = document.getElementById('dotsContainer');
+
+  function renderGallery() {
+    const existingCards = stage.querySelectorAll('.polaroid-card');
+    existingCards.forEach(card => card.remove());
+    dotsContainer.innerHTML = '';
+
+    const next2Index = (currentIndex + 2) % photos.length;
+    createCard(photos[next2Index], 2, 'rotate(5deg) translate(6px, 4px)');
+
+    const next1Index = (currentIndex + 1) % photos.length;
+    createCard(photos[next1Index], 3, 'rotate(-6deg) translate(-8px, 3px)');
+
+    createCard(photos[currentIndex], 4, 'rotate(-1deg)', true);
+
+    photos.forEach((_, idx) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (idx === currentIndex ? ' active' : '');
+      dot.onclick = (e) => {
+        e.stopPropagation();
+        currentIndex = idx;
+        renderGallery();
+      };
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  function createCard(src, zIndex, transformStyle, isTop = false) {
+    const card = document.createElement('div');
+    card.className = 'polaroid-card';
+    if (isTop) card.id = 'topCard';
+    card.style.zIndex = zIndex;
+    card.style.transform = transformStyle;
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.onerror = function() {
+      this.src = 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80';
+    };
+
+    card.appendChild(img);
+    stage.appendChild(card);
+  }
+
+  function nextPhoto() {
+    const topCard = document.getElementById('topCard');
+    if (topCard) {
+      topCard.classList.add('slide-out-left');
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % photos.length;
+        renderGallery();
+      }, 280);
+    }
+  }
+
+  function prevPhoto() {
+    currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+    renderGallery();
+  }
+
+  renderGallery();
+</script>
+
+</body>
+</html>
